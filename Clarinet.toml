@@ -1,0 +1,5 @@
+[project]
+name = "stx-raffle"
+requirements = []
+[contracts.stx-raffle]
+path = "contracts/stx-raffle.clar"
