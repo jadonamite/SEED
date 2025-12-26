@@ -10,8 +10,8 @@ plan:
       transactions:
         - contract-publish:
             contract-name: stx-raffle
-            expected-sender: ST2DZZQ1SDTC9A32QT36SF3C79VBGJ8E7MHAJSZ0C
-            cost: 128365
+            expected-sender: ST3GAYKCWBD2PTNR77WGYWCPPR102C5E0C9V1H9ZX
+            cost: 4108847
             path: contracts/stx-raffle.clar
             anchor-block-only: true
             clarity-version: 3

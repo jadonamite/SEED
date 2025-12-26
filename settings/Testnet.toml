@@ -2,10 +2,5 @@
 name = "testnet"
 stacks_node_rpc_url = "https://api.testnet.hiro.so"
 
-
 [accounts.deployer]
-
-secret_key = "2a5bc48c6c615ffb4e6b6ee8e86b796ac5fde7ed023a1a0c9f51a94a3f7aca9901"
-
-# mnemonic = "cheap mutual invest blouse moon basic unable fitness library infant vast actress"
-# mnemonic = "shadow private easily thought say logic fault paddle word top book during ignore notable orange flight clock image wealth health outside kitten belt reform"
+mnemonic = "priority amount glass leaf injury cannon festival practice elbow photo switch afford wish bring prosper dinner card bundle stool impact short approve fuel fall"

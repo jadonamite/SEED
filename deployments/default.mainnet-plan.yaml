@@ -1,0 +1,18 @@
+---
+id: 0
+name: Mainnet deployment
+network: mainnet
+stacks-node: "https://api.hiro.so"
+bitcoin-node: "http://blockstack:blockstacksystem@bitcoin.blockstack.com:8332"
+plan:
+  batches:
+    - id: 0
+      transactions:
+        - contract-publish:
+            contract-name: stx-raffle
+            expected-sender: SP1GAFBEN2FYRC20GY9SZT0RQ3ZEKY0245P7G32WR
+            cost: 184724918
+            path: contracts/stx-raffle.clar
+            anchor-block-only: true
+            clarity-version: 3
+      epoch: "3.1"
