@@ -1,20 +1,27 @@
 "use client";
 
-import { Box, Container, Grid, GridItem, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Container, Grid, GridItem, Flex, Heading } from "@chakra-ui/react";
 import ConnectWallet from "../components/ConnectWallet";
 import PotCard from "../components/dashboard/PotCard";
 import ActionCard from "../components/dashboard/ActionCard";
 import StatsCard from "../components/dashboard/StatsCard";
 
+// 1. IMPORT THE HOOK
+// (Make sure this path matches where you put the file I gave you earlier)
+import { useRaffleData } from "../hooks/useRaffleData"; 
+
 export default function Home() {
+  // 1. USE THE CORRECT NAMES (potSize, not prizePool)
+  // The error log showed us exactly what the hook returns: { potSize, round, isLoading }
+  const { potSize, round, isLoading } = useRaffleData(); 
+
   return (
     <Box minH="100vh" bg="#FAFAFA" pb={20}>
       
-      {/* Navbar: "OPENSEASON" Logo */}
+      {/* Navbar */}
       <Box py={8} px={4}>
         <Container maxW="container.lg">
           <Flex justify="space-between" align="center">
-            {/* THE NEW LOGO */}
             <Heading 
               fontFamily="var(--font-montserrat)" 
               fontWeight="900" 
@@ -24,7 +31,6 @@ export default function Home() {
             >
               OPENSEASON
             </Heading>
-            
             <ConnectWallet />
           </Flex>
         </Container>
@@ -39,7 +45,14 @@ export default function Home() {
         >
           {/* Pot Card */}
           <GridItem colSpan={{ base: 1, md: 2 }} rowSpan={{ base: 1, md: 2 }}>
-            <PotCard />
+            
+            {/* 2. PASS THE MATCHING VARIABLES */}
+            <PotCard 
+              potSize={potSize}   // Now matches the variable from the hook
+              round={round}       // Now uses the real round number
+              loading={isLoading} // Uses the real loading state
+            />
+
           </GridItem>
 
           {/* Action Card */}
