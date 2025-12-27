@@ -1,6 +1,7 @@
 "use client";
 
-import { Card, CardBody, Stack, Flex, Badge, Text, Heading, Box, keyframes } from "@chakra-ui/react";
+import { Card, CardBody, Stack, Flex, Badge, Text, Heading, Box } from "@chakra-ui/react";
+import { keyframes } from "@emotion/react";
 
 // 1. Define the props this component expects
 interface PotCardProps {
