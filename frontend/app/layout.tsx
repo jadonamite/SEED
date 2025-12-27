@@ -12,8 +12,12 @@ const montserrat = Montserrat({
 
 export const metadata: Metadata = {
   title: "OPENSEASON",
-  description: "Daily STX Raffle",
+  description: "| Daily STX Raffle",
+  icons: {
+    icon: "/OpenSeason.png",
+  },
 };
+
 
 export default function RootLayout({
   children,
