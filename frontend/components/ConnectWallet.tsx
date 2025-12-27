@@ -1,14 +1,17 @@
 "use client";
 
 import { Button } from "@chakra-ui/react";
-import { ArrowForwardIcon } from "@chakra-ui/icons"; 
-import { showConnect } from "@stacks/connect";
-import { userSession } from "../lib/auth"; 
+import { ArrowForwardIcon } from "@chakra-ui/icons";
+import { useConnect } from "@stacks/connect-react"; // 👈 New Import
+import { userSession } from "../lib/auth";
 import { useState, useEffect } from "react";
 
 export default function ConnectWallet() {
   const [mounted, setMounted] = useState(false);
   const [isSignedIn, setIsSignedIn] = useState(false);
+  
+  // 1. Get the authenticate function from the hook
+  const { authenticate } = useConnect();
 
   useEffect(() => {
     setMounted(true);
@@ -17,13 +20,13 @@ export default function ConnectWallet() {
     }
   }, []);
 
+  // 2. Use the hook's authenticate function
   const connect = () => {
-    showConnect({
+    authenticate({
       appDetails: {
         name: "STX Raffle",
         icon: window.location.origin + "/favicon.ico",
       },
-      redirectTo: "/",
       onFinish: () => {
         window.location.reload();
       },

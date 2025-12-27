@@ -3,9 +3,8 @@
 import { Card, CardBody, VStack, Heading, Text, Button, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, useToast } from "@chakra-ui/react";
 import { useState } from "react";
 import { useConnect } from "@stacks/connect-react";
-// 1. FIX: Import the constant 'STACKS_TESTNET' instead of the class
 import { STACKS_TESTNET } from "@stacks/network";
-import { PostConditionMode, uintCV } from "@stacks/transactions";
+import { PostConditionMode } from "@stacks/transactions"; // Removed uintCV since we don't need it anymore
 import { userSession } from "../../lib/auth";
 
 export default function ActionCard() {
@@ -13,7 +12,7 @@ export default function ActionCard() {
   const { doContractCall } = useConnect();
   const toast = useToast();
 
-  const TICKET_PRICE = 10; 
+  const TICKET_PRICE = 0.1; // Updated to match your contract (100,000 uSTX = 0.1 STX)
 
   const handleEnterRaffle = async () => {
     if (!userSession.isUserSignedIn()) {
@@ -22,16 +21,16 @@ export default function ActionCard() {
     }
 
     await doContractCall({
-      // 2. FIX: Use the constant directly
       network: STACKS_TESTNET,
       anchorMode: 1,
       contractAddress: "ST3GAYKCWBD2PTNR77WGYWCPPR102C5E0C9V1H9ZX",
       contractName: "stx-raffle",
       functionName: "buy-ticket", 
-      functionArgs: [uintCV(ticketCount)], 
-      // 3. FIX: Change .ALLOW to .Allow (Case sensitive update)
-      postConditionMode: PostConditionMode.Allow, 
-      // 4. FIX: Add type 'any' to data to stop the TypeScript warning
+      
+      // 🚨 THE FIX: Send empty arguments because your contract takes 0 args
+      functionArgs: [], 
+
+      postConditionMode: PostConditionMode.Allow,
       onFinish: (data: any) => {
         toast({
           title: "Transaction Sent!",
@@ -57,35 +56,34 @@ export default function ActionCard() {
           </Heading>
 
           <Text fontSize="sm" color="gray.400">
-            Select how many tickets you want to buy. <br/> 
+            Current Round Ticket Price: <br/> 
             <Text as="span" color="brand.400">1 Ticket = {TICKET_PRICE} STX</Text>
           </Text>
 
+          {/* NOTE: Your contract only supports buying 1 ticket per transaction.
+             I have disabled the input so users don't get confused trying to buy 5.
+          */}
           <NumberInput 
             min={1} 
-            max={50} 
-            value={ticketCount} 
-            onChange={(_, val) => setTicketCount(val)}
+            max={1} 
+            value={1} 
+            isDisabled={true} // Locked to 1 for now
             variant="filled"
           >
             <NumberInputField bg="gray.800" color="white" _hover={{ bg: "gray.700" }} />
-            <NumberInputStepper>
-              <NumberIncrementStepper color="white" />
-              <NumberDecrementStepper color="white" />
-            </NumberInputStepper>
+            {/* Steppers hidden since we are locked to 1 */}
           </NumberInput>
 
           <Text fontSize="xs" fontWeight="bold" textAlign="right" color="gray.500">
-            TOTAL: {ticketCount * TICKET_PRICE} STX
+            TOTAL: {TICKET_PRICE} STX
           </Text>
 
           <Button 
             size="lg" 
             colorScheme="green" 
             onClick={handleEnterRaffle}
-            isDisabled={ticketCount < 1}
           >
-            Buy Tickets
+            Buy 1 Ticket
           </Button>
 
         </VStack>
