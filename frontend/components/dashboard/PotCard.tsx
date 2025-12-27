@@ -7,6 +7,7 @@ interface PotCardProps {
   potSize: number;
   round: number;
   loading: boolean;
+  price?: number; // 🆕 Optional Prop
 }
 
 // Animations
@@ -21,12 +22,16 @@ const scroll = keyframes`
 `;
 
 // 2. Accept the props in the function definition
-export default function PotCard({ potSize, round, loading }: PotCardProps) {
+export default function PotCard({ potSize, round, loading, price }: PotCardProps) {
   const shimmerAnimation = `${shimmer} 3s linear infinite`;
   const scrollAnimation = `${scroll} 20s linear infinite`;
 
-  // Helper to format currency (assuming 1 STX = $2.00 for demo)
-  const usdValue = (potSize * 2.00).toLocaleString();
+  // 🆕 Use real price or default to 2.00
+  const currentPrice = price || 2.00;
+  const usdValue = (potSize * currentPrice).toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
 
   return (
     <Card 

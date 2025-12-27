@@ -9,6 +9,7 @@ export function useRaffleData() {
   const [potSize, setPotSize] = useState<number>(0);
   const [round, setRound] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [stxPrice, setStxPrice] = useState<number>(0); // 🆕 NEW STATE
 
   const network = STACKS_TESTNET;
 
@@ -17,6 +18,19 @@ export function useRaffleData() {
     console.error("🟢 RAFFLE HOOK: Starting fetch...");
 
     try {
+      // --- 🆕 NEW: FETCH REAL PRICE ---
+      try {
+        const priceRes = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=blockstack&vs_currencies=usd");
+        const priceData = await priceRes.json();
+        const price = priceData.blockstack.usd;
+        console.error("🟢 RAFFLE HOOK: Real STX Price:", price);
+        setStxPrice(price);
+      } catch (err) {
+        console.error("🔴 RAFFLE HOOK: Failed to fetch price, defaulting...", err);
+        setStxPrice(2.00); // Fallback
+      }
+      // --------------------------------
+
       const options = {
         contractAddress: CONTRACT_ADDRESS,
         contractName: CONTRACT_NAME,
@@ -38,7 +52,6 @@ export function useRaffleData() {
       console.error("🟢 RAFFLE HOOK: JSON Pot Data", potJson);
       
       // PARSING LOGIC (The "NaN" Fixer)
-      // Check if value is nested (e.g. { value: { value: '100' } })
       let safePot = 0;
       if (potJson.value) {
           if (typeof potJson.value === 'object' && potJson.value.value) {
@@ -67,5 +80,6 @@ export function useRaffleData() {
     fetchRaffleData();
   }, []);
 
-  return { potSize, round, isLoading, refresh: fetchRaffleData };
+  // 🆕 Return stxPrice here
+  return { potSize, round, isLoading, stxPrice, refresh: fetchRaffleData };
 }
